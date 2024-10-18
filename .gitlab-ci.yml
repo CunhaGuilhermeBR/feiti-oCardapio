@@ -1,0 +1,131 @@
+# Define as etapas do pipeline a serem executadas em ordem
+stages:
+  - sonarqube-check
+  - build
+  - deploy
+
+# Executa antes de todas as etapas do pipeline
+before_script:
+  - if [ "$CI_COMMIT_REF_NAME" = "development" ]; then
+      export CE_APP_NAME="${CE_APP_NAME_development}";
+      export CE_CPU="${CE_CPU_development}";
+      export CE_MIN_INSTANCE="${CE_MIN_INSTANCE_development}";
+      export CE_RAM="${CE_RAM_development}";
+      export CR_APP="${CR_APP_development}";
+      export CE_CR_SECRET="${CE_CR_SECRET_store}";
+      export CE_PROJECT_NAME="${CE_PROJECT_NAME_store}";
+      export CR_PROJECT="${CR_PROJECT_store}";
+    
+    elif [ "$CI_COMMIT_REF_NAME" = "main" ]; then
+      export CE_APP_NAME="${CE_APP_NAME_main}";
+      export CE_CPU="${CE_CPU_main}";
+      export CE_MIN_INSTANCE="${CE_MIN_INSTANCE_main}";
+      export CE_RAM="${CE_RAM_main}";
+      export CR_APP="${CR_APP_main}";
+      export CE_CR_SECRET="${CE_CR_SECRET_store}";
+      export CE_PROJECT_NAME="${CE_PROJECT_NAME_store}";
+      export CR_PROJECT="${CR_PROJECT_store}";
+    
+    elif [ "$CI_COMMIT_REF_NAME" = "reforgedFramework" ]; then
+      export CE_APP_NAME="${CE_APP_NAME_reforged}";
+      export CE_CPU="${CE_CPU_reforged}";
+      export CE_MIN_INSTANCE="${CE_MIN_INSTANCE_reforged}";
+      export CE_RAM="${CE_RAM_reforged}";
+      export CR_APP="${CR_APP_reforged}";
+      export CE_CR_SECRET="${CE_CR_SECRET_store}";
+      export CE_PROJECT_NAME="${CE_PROJECT_NAME_store}";
+      export CR_PROJECT="${CR_PROJECT_store}";
+    fi
+
+  - |
+    if [ "$DEBUG" = "true" ]; then
+      echo "CE_APP_NAME -> $CE_APP_NAME"
+      echo "CE_CPU -> $CE_CPU"
+      echo "CE_CR_SECRET -> $CE_CR_SECRET"
+      echo "CE_MIN_INSTANCE -> $CE_MIN_INSTANCE"
+      echo "CE_RAM -> $CE_RAM"
+      echo "CE_PORT -> $CE_PORT"
+      echo "CE_PROJECT_NAME -> $CE_PROJECT_NAME"
+      echo "CR_APP -> $CR_APP"
+      echo "CR_HOST -> $CR_HOST"
+      echo "CR_PROJECT -> $CR_PROJECT"
+      echo "IC_LOGIN_APIKEY -> ${IC_LOGIN_APIKEY:0:4}"
+      echo "IC_REGION -> $IC_REGION"
+      echo "IC_RESOURCE_GROUP -> $IC_RESOURCE_GROUP"
+    fi
+
+  - |
+    if ! ibmcloud login --apikey $IC_LOGIN_APIKEY \
+      -g "$IC_RESOURCE_GROUP" \
+      -r $IC_REGION \
+      -q; then
+      echo "Failed to login to IBM Cloud."
+      echo "ibmcloud login --apikey ${IC_LOGIN_APIKEY:0:4} \
+        -g ${IC_RESOURCE_GROUP} \
+        -r $IC_REGION"
+      exit 1
+    fi
+
+sonarqube-check:
+  stage: sonarqube-check  
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  script: 
+    - /home/kadmin/sonar-scanner-6.2.1.4610-linux-x64/bin/sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'reforgedFramework'
+    - if: $CI_COMMIT_BRANCH == 'main'
+    - if: $CI_COMMIT_BRANCH == 'qas'
+    - if: $CI_COMMIT_BRANCH == 'development'
+
+
+# Etapa de build
+build:
+  stage: build
+  # Script a ser executado para esta etapa
+  script:
+    # Faz login no registry da IBM Cloud
+    - ibmcloud cr login --client docker
+    # Builda a imagem Docker a partir do Dockerfile local e a envia para o registry
+    - |
+      if docker build --build-arg CE_PORT=$CE_PORT \
+        -t $CR_HOST/$CR_PROJECT/$CR_APP . --push; then
+        echo "Docker image built: $CR_HOST/$CR_PROJECT/$CR_APP"
+      else
+        echo "Failed to build Docker image: $CR_HOST/$CR_PROJECT/$CR_APP"
+        exit 1
+      fi
+
+# Etapa de deploy
+deploy:
+  stage: deploy
+  # Script a ser executado para esta etapa
+  script:
+    # Seleciona o projeto no Code Engine
+    - ibmcloud ce project select --name "$CE_PROJECT_NAME"
+    # Verifica se o aplicativo já existe no Code Engine
+    - |
+      if ibmcloud ce app get --name $CE_APP_NAME -q; then
+        echo "Application $CE_APP_NAME already exists. Updating the application..."
+        ibmcloud ce app update --name $CE_APP_NAME \
+          --image $CR_HOST/$CR_PROJECT/$CR_APP \
+          --registry-secret $CE_CR_SECRET \
+          --port $CE_PORT \
+          --cpu $CE_CPU \
+          --memory $CE_RAM \
+          --min $CE_MIN_INSTANCE
+      else
+        echo "Creating a new application: $CE_APP_NAME"
+        ibmcloud ce app create --name $CE_APP_NAME \
+          --image $CR_HOST/$CR_PROJECT/$CR_APP \
+          --registry-secret $CE_CR_SECRET \
+          --port $CE_PORT \
+          --cpu $CE_CPU \
+          --memory $CE_RAM \
+          --min $CE_MIN_INSTANCE
+      fi
+
+

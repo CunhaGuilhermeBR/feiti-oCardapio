@@ -1,0 +1,33 @@
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@1.7.0/dist/htmx.min.js"></script>
+<script src="https://unpkg.com/htmx.org@1.9.11/dist/ext/json-enc.js"></script>
+
+<form id="generateToken" hx-get="https://awsa.speckstore.com.br/api/v1/authenticate/loginMoodle/{speck}" hx-request="{&quot;noHeaders&quot;: true}" hx-ext="json-enc" hx-target="#responseData">
+
+    <input name="token" type="text" value="{speck}" id="{speck}" style="visibility:hidden; display: none;">
+    <button type="submit" style="background-color: rgba(6,164,167,255); color:rgba(222,242,245,255); border-radius: 10px; max-width:150px; width: 100%;">
+        Gerar link
+    </button>
+</form>
+<br>
+<br>
+
+<output id="responseData" color="red" style="font-weight: bold;">
+</output>
+
+<script>
+    htmx.on('#generateToken', 'htmx:afterRequest', (event) => {
+        const responseData = document.getElementById('responseData').innerHTML;
+        const decodedResponseData = JSON.parse(responseData);
+        document.getElementById('responseData').innerHTML = `
+        <br>
+         <h3>
+            <strong>
+                ✒️
+            </strong>
+            <a href="https://awsa.speckstore.com.br/speck-store/${decodedResponseData.interviewId}" target="_blank" style="background-color: rgb(255, 255, 255); font-size: 0.9375rem;">
+                Clique aqui para responder a sua entrevista
+            </a>
+        </h3>
+        `;
+    });
+</script>

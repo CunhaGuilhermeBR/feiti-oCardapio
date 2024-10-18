@@ -1,0 +1,57 @@
+:root {
+    --mainColor: linear-gradient(32.6deg, #13637a -4.98%, #46c1bd 105.09%);
+    --white: #fff;
+	--black: #000;
+	--maximumBlueGreen: #46c1bd;
+	--duckBlue: #248290;
+	--whiteSmoke: #f8f9fa;
+	--marengo: #404b5a;
+	--cadetGrey: #929fb1;
+	--slateGrey: #6e7a8a;
+	--anti-flashWhite: #eef0f3;
+	--aliceBlue: #e1e7ec;
+	--lightSteelBlue: #aebecd;
+	--squidInk: #202833;
+	--flame: #e24817;
+	--tealBlue: #13637a;
+	--cinnabar: #e5493a;
+	--pluto: #35a2a7;
+	--planetaryBlue: #284B63;
+	--sapphire: #495055;
+	--raven: #6c757d;
+	--charizard: #F05623;
+	--gunmetal: #666;
+	--tankGrey: #333333;
+	--charmander: #D04F20;
+
+    --bg-primary: var(--mainColor);
+
+    --clr-primary: var(--marengo);
+	--clr-primary-100: var(--anti-flashWhite);
+	--clr-primary-200: var(--aliceBlue);
+	--clr-primary-500: var(--lightSteelBlue);
+	--clr-primary-600: var(--cadetGrey);
+	--clr-primary-700: var(--slateGrey);
+	
+    --clr-secondary: var(--duckBlue);
+	--clr-secondary-600: var(--maximumBlueGreen);
+	--clr-secondary-900: var(--tealBlue);
+	
+    --clr-accent-500: var(--cinnabar);
+	--clr-accent-700: var(--flame);
+	--clr-accent-900: var(--flame);
+
+	--clr-neutral-100: var(--whiteSmoke);
+	--clr-neutral-900: var(--squidInk);
+
+    --clr-page-title: var(--clr-neutral-900);
+
+	--clr-text: var(--clr-neutral-900);
+
+	--clr-button: var(--clr-accent-700);
+	--clr-button-assessment: var(--marengo);
+
+	--clr-f-button: var(--white);
+
+    --clr-footer: var(--clr-primary-500);
+}

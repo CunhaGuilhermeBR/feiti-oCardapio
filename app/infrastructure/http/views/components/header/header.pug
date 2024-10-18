@@ -1,0 +1,31 @@
+doctype html
+html(lang="pt-br")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    style
+      include ../../main.css
+      //- script(src = "https://cdn.jsdelivr.net/npm/sweetalert2@11");
+    title= title
+  body
+    header
+      if logoImageUrl || logoUrl
+        .customer-logo
+          img(src=logoImageUrl || logoUrl, alt="Application Logo")
+      if headerText
+        p.header-text= headerText
+      if leaveButton
+        button.button-header
+          span.button-header-span= leaveButton
+        script.
+          document.addEventListener("DOMContentLoaded", () => {
+            const button = document.querySelector(".button-header");
+            button.addEventListener("click", () => {
+              const leaveButtonUrl = #{leaveButtonUrl ? `'${leaveButtonUrl}'` : 'null'};
+              if (leaveButtonUrl) {
+                window.location.href = leaveButtonUrl;
+              } else {
+                console.warn('Leave button URL is not provided'); 
+              }
+            });
+          });

@@ -1,0 +1,112 @@
+{
+  "name": "awsa-refactored",
+  "version": "1.0.0",
+  "main": "build/infrastructure/http/index.js",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "yarn@1.22.22",
+  "authors": [
+    {
+      "name": "Guilherme Augusto",
+      "email": "guilherme.cunha@kukac.com.br",
+      "url": "https://github.com/CunhaGuilhermeBR"
+    },
+    {
+      "name": "Matheus Araujo",
+      "email": "matheus.araujo@kukac.com.br",
+      "url": "https://github.com/moohbr"
+    },
+    {
+      "name": "Ruan Finamor",
+      "email": "ruan.correia@kukac.com.br"
+    },
+    {
+      "name": "Felipe Silva",
+      "email": "felipe.silva@kukac.com.br"
+    }
+  ],
+  "devDependencies": {
+    "@prettier/plugin-pug": "3.0.0",
+    "@types/amqplib": "0.10.5",
+    "@types/bcryptjs": "2.4.6",
+    "@types/compression": "1.7.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/express-session": "1.18.0",
+    "@types/jsonwebtoken": "9.0.5",
+    "@types/mime-types": "2.1.4",
+    "@types/morgan": "1.9.9",
+    "@types/multer": "1.4.11",
+    "@types/node": "^20.14.2",
+    "@types/nodemailer": "6.4.15",
+    "@types/pug": "2.0.10",
+    "@types/redis": "^4.0.11",
+    "@types/serve-favicon": "2.5.7",
+    "@types/swagger-jsdoc": "6.0.4",
+    "@types/swagger-ui-express": "4.1.6",
+    "@types/xmldom": "0.1.34",
+    "@typescript-eslint/eslint-plugin": "6.15.0",
+    "@typescript-eslint/parser": "6.15.0",
+    "hint": "7.1.12",
+    "prettier": "3.3.2",
+    "prisma": "5.21.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsup": "8.0.1",
+    "tsx": "4.6.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@elastic/ecs-morgan-format": "1.5.1",
+    "@elastic/ecs-winston-format": "1.5.0",
+    "@pdfme/common": "4.2.5",
+    "@pdfme/generator": "4.2.5",
+    "@pdfme/schemas": "4.3.2",
+    "@prisma/client": "5.20.0",
+    "@types/express": "^4.17.21",
+    "amqplib": "0.10.4",
+    "bcryptjs": "2.4.3",
+    "compression": "1.7.4",
+    "connect-redis": "7.1.1",
+    "cors": "2.8.5",
+    "cron": "3.1.7",
+    "eslint": "8.56.0",
+    "express": "^4.19.2",
+    "express-rate-limit": "7.3.1",
+    "express-session": "1.18.0",
+    "ibm-cos-sdk": "1.13.4",
+    "morgan": "1.10.0",
+    "nodemailer": "6.9.14",
+    "openai": "^4.51.0",
+    "prom-client": "15.1.3",
+    "pug": "3.0.3",
+    "rate-limit-redis": "4.2.0",
+    "redis": "4.6.15",
+    "redis-om": "0.4.3",
+    "serve-favicon": "2.5.0",
+    "swagger-autogen": "2.23.7",
+    "swagger-jsdoc": "6.2.8",
+    "swagger-ui-express": "5.0.0",
+    "sweetalert2": "11.14.1",
+    "winston": "3.11.0",
+    "xmldom": "0.6.0",
+    "zod": "^3.23.8"
+  },
+  "scripts": {
+    "start": "node --env-file .env build/infrastructure/http/index.js",
+    "dev": "tsx watch app/infrastructure/http/index.ts",
+    "build": "tsup app --config tsup.config.ts --out-dir build",
+    "prebuild": "yarn prettier:pug && yarn eslint:fix",
+    "postinstall": "npx prisma generate",
+    "prettier:pug": "yarn prettier --write '**/*.pug' --plugin='@prettier/plugin-pug'",
+    "eslint:fix": "npx eslint --fix app/"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js",
+    "seed-moodle": "node prisma/seedMoodle.js",
+    "seed-all": "npm run seed && npm run seed-moodle"
+  },
+  "engines": {
+    "node": "^20.10.0"
+  }
+}

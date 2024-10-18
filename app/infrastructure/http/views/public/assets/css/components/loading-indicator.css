@@ -1,0 +1,19 @@
+.loading-indicator {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: var(--ff-primary);
+    font-size: var(--fs-800);
+    font-weight: var(--fw-semi-bold);
+    padding-right: 130px;
+}

@@ -1,0 +1,6 @@
+body
+  mixin adminCard(title, description, href)
+    .adminCard-div(href=href)
+      h3= title
+      p!= description
+      btn.primary-button Editar

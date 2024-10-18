@@ -1,0 +1,15 @@
+include ../../components/header/header.pug
+main
+  section.container
+    .container__div
+      h1.title= title
+      if videoUrl
+        a(href=videoUrl, target="_blank")
+          img(src=iconUrl, alt="Video icon")
+    if description
+      p.paragraph!= description
+    if button
+      a.btn(href=nextPage, style="color: white")= button
+  if imageUrl
+    section.container
+      img.img-background(src=imageUrl, alt=title)

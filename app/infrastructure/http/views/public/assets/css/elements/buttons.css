@@ -1,0 +1,85 @@
+/* Default Button Style */
+.btn {
+    display: inline-block;
+    width: 160px;
+    height: 35px;
+    margin-top: 2rem;
+    background: var(--clr-button-assessment);
+    border-radius: 20px;
+    font-family: var(--ff-primary);
+    font-size: var(--fs-300);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-700);
+    text-align: center;
+}
+
+/* Specific Button Variations */
+.btnInterview {
+    width: 12rem;
+    height: 2rem;
+    background-color: var(--white);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-family: var(--ff-primary);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-300);
+    line-height: var(--lh-700);
+    color: var(--clr-secondary-900);
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn2, .btn3 {
+    padding: 4px 43px;
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-300);
+    border-radius: 20px;
+    border: 2px solid var(--clr-button);
+    font-family: var(--ff-primary);
+}
+
+.btn2 {
+    color: var(--clr-f-button);
+    background: var(--clr-button);
+    cursor: pointer;
+}
+
+.btn3 {
+    color: var(--clr-button);
+    background: var(--clr-primary-500);
+}
+
+/* Accept Button */
+.accept-button-inicial-state {
+    background-color: var(--clr-button);
+}
+
+/* Header Button Styles */
+.button-header {
+    background-color: var(--clr-secondary-600);
+    color: var(--white);
+    padding: 10px 20px;
+    border: none;
+    font-family: var(--ff-primary);
+    font-size: var(--fs-600);
+    font-weight: var(--fw-button);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-header-span {
+    display: inline-block;
+    width: 100%;
+}
+
+.button-header-span:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}

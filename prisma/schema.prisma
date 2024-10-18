@@ -1,0 +1,309 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Application {
+  id               Int                @id @default(autoincrement())
+  url              String
+  name             String
+  imageurl         String
+  enabled          Boolean            @default(true)
+  createdat        DateTime           @default(now())
+  updatedat        DateTime           @updatedAt
+  Sale             Sale[]
+  ConfigurableItem ConfigurableItem[]
+  ApplicationEmail ApplicationEmail[]
+}
+
+model ApplicationEmail {
+  id            Int         @id @default(autoincrement())
+  email         String
+  emailPassword String
+  host          String
+  port          Int
+  domain        String
+  Application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  applicationId Int         @unique
+}
+
+enum SaleSource {
+  WIX
+  VTEX
+  MOODLE
+}
+
+model Sale {
+  id                String             @id @default(uuid())
+  externalId        String
+  email             String
+  customerName      String             @default("John Doe")
+  createdat         DateTime           @default(now())
+  updatedat         DateTime           @updatedAt
+  source            SaleSource
+  Application       Application        @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  applicationId     Int
+  Interview         Interview[]
+  MoodleSubmissions MoodleSubmission[]
+  Feedback          Feedback[]
+  AcceptTCLEField   AcceptTCLEField[]
+}
+
+model Template {
+  id           String            @id @default(uuid())
+  title        String            @unique
+  vocational   Boolean           @default(false)
+  createdat    DateTime          @default(now())
+  updatedat    DateTime          @updatedAt
+  configTCLE   ConfigConsentTerm @relation(fields: [configTCLEId], references: [id])
+  configTCLEId Int
+  Interview    Interview[]
+}
+
+model InterviewQuestionnaire {
+  id                    Int                 @id @default(autoincrement())
+  InterviewQuestions    InterviewQuestion[]
+  ConfigQuestionnaire   ConfigQuestionnaire @relation(fields: [configQuestionnaireId], references: [id], onDelete: Cascade)
+  configQuestionnaireId Int
+}
+
+model InterviewQuestion {
+  index                  Int
+  question               String
+  InterviewQuestionnaire InterviewQuestionnaire @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  questionnaireId        Int
+  ConfigQuestion         ConfigQuestion         @relation(fields: [configQuestionId], references: [id], onDelete: Cascade)
+  configQuestionId       Int
+
+  @@id([questionnaireId, index])
+}
+
+model Interview {
+  id           String        @id @default(uuid())
+  SpeckResults SpeckResult[]
+  Sale         Sale          @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  saleId       String
+  templateId   String
+  Template     Template      @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  responded    Boolean       @default(false)
+  createdat    DateTime      @default(now())
+  updatedat    DateTime      @updatedAt
+
+  Recommendation Recommendation[]
+}
+
+model SpeckResult {
+  id                  Int               @id @default(autoincrement())
+  Interview           Interview         @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  interviewId         String
+  pdfReportFile       String
+  createdat           DateTime          @default(now())
+  updatedat           DateTime          @updatedAt
+  ConfigSpeckResult   ConfigSpeckResult @relation(fields: [configSpeckResultId], references: [id], onDelete: Cascade)
+  configSpeckResultId Int
+}
+
+model AcceptTCLEField {
+  saleId                         String
+  Sale                           Sale                         @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  accept                         Boolean
+  ConfigConsentTermCheckFieldsId Int
+  ConfigConsentTermCheckFields   ConfigConsentTermCheckFields @relation(fields: [ConfigConsentTermCheckFieldsId], references: [id])
+  createdat                      DateTime                     @default(now())
+  updatedat                      DateTime                     @updatedAt
+
+  @@id([saleId, ConfigConsentTermCheckFieldsId])
+}
+
+// Old PVDL
+
+model Course {
+  name         String       @id @unique
+  shortName    String       @unique
+  goodFeature  Boolean
+  createdat    DateTime     @default(now())
+  updatedat    DateTime     @updatedAt
+  imageUrl     String?
+  description  String?
+  categoryName String?
+  moodleId     Int
+  bigFive      String       @default("1Abertura")
+  MoodleTasks  MoodleTask[]
+
+  Recommendation Recommendation[]
+}
+
+model MoodleTask {
+  id                Int                @id @default(autoincrement())
+  name              String
+  prompt            String
+  courseName        String
+  createdat         DateTime           @default(now())
+  updatedat         DateTime           @updatedAt
+  Course            Course             @relation(fields: [courseName], references: [name])
+  MoodleSubmissions MoodleSubmission[]
+}
+
+model MoodleSubmission {
+  id           Int        @id @default(autoincrement())
+  content      String
+  moodleTaskId Int
+  moodleTask   MoodleTask @relation(fields: [moodleTaskId], references: [id])
+  saleId       String
+  Sale         Sale       @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  createdat    DateTime   @default(now())
+  updatedat    DateTime   @updatedAt
+
+  @@unique([saleId, moodleTaskId])
+}
+
+enum FeedbackStatus {
+  PENDING
+  APPROVED
+}
+
+model Feedback {
+  saleId    String
+  Sale      Sale           @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  status    FeedbackStatus @default(PENDING)
+  createdat DateTime       @default(now())
+  updatedat DateTime       @updatedAt
+
+  @@id([saleId, title])
+}
+
+model Tutor {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  password   String
+  firstLogin Boolean  @default(true)
+  createdat  DateTime @default(now())
+  updatedat  DateTime @updatedAt
+}
+
+// End old PVDL
+// New PVDL
+
+model Recommendation {
+  courseName  String
+  Course      Course    @relation(fields: [courseName], references: [name], onDelete: Cascade)
+  interviewId String
+  Interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+
+  @@id([interviewId, courseName])
+}
+
+// End new PVDL
+// Begin configs
+
+enum ConfigPageType {
+  INSTRUCTIONS
+  HOWITWORKS
+  PRESENTATION
+  ITEM
+  SPECKRESULT
+  INTERVIEW
+  SELECTQUESTIONNAIRE
+  SELECTNAME
+}
+
+// Tabela base ConfigurableItem
+model ConfigurableItem {
+  id                           Int                            @id @default(autoincrement())
+  enabled                      Boolean
+  title                        String
+  description                  String
+  Application                  Application                    @relation(fields: [applicationId], references: [id])
+  applicationId                Int
+  createdat                    DateTime                       @default(now())
+  updatedat                    DateTime                       @updatedAt
+  configPageType               ConfigPageType                 @default(ITEM)
+  index                        Int?
+  imageUrl                     String?
+  ConfigurableItemLabels       ConfigurableItemLabels[]
+  ConfigQuestionnaire          ConfigQuestionnaire[]
+  ConfigMoodle                 ConfigMoodle[]
+  ConfigConsentTerm            ConfigConsentTerm[]
+  ConfigConsentTermCheckFields ConfigConsentTermCheckFields[]
+  ConfigSpeckResult            ConfigSpeckResult[]
+  ConfigQuestion               ConfigQuestion[]
+}
+
+// Tabela base ConfigurableItemLabels --
+model ConfigurableItemLabels {
+  id               Int              @id @default(autoincrement())
+  key              String
+  value            String
+  ConfigurableItem ConfigurableItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId           Int
+
+  @@unique([itemId, key])
+}
+
+// Tabela de especialização ConfigQuestionnaire
+model ConfigQuestionnaire {
+  id               Int                      @id @default(autoincrement())
+  ConfigurableItem ConfigurableItem         @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId           Int
+  ConfigQuestion   ConfigQuestion[]
+  Questionnaire    InterviewQuestionnaire[]
+}
+
+// Tabela de especialização ConfigQuestion
+model ConfigQuestion {
+  id                  Int                 @id @default(autoincrement())
+  ConfigurableItem    ConfigurableItem    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId              Int
+  ConfigQuestionnaire ConfigQuestionnaire @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  minlength           Int                 @default(28)
+  maxlength           Int                 @default(1000)
+  questionnaireId     Int
+  InterviewQuestion   InterviewQuestion[]
+}
+
+// Tabela de especialização ConfigMoodle
+model ConfigMoodle {
+  id               Int              @id @default(autoincrement())
+  moodleApiUrl     String
+  moodleApiToken   String           @unique
+  ConfigurableItem ConfigurableItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId           Int
+}
+
+// Tabela de especialização ConfigConsentTerm
+model ConfigConsentTerm {
+  id                           Int                            @id @default(autoincrement())
+  ConfigurableItem             ConfigurableItem               @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId                       Int
+  Template                     Template[]
+  ConfigConsentTermCheckFields ConfigConsentTermCheckFields[]
+}
+
+// Tabela de especialização ConfigConsentTermCheckFields
+model ConfigConsentTermCheckFields {
+  id                Int               @id @default(autoincrement())
+  ConfigurableItem  ConfigurableItem  @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId            Int
+  ConfigConsentTerm ConfigConsentTerm @relation(fields: [consentTermId], references: [id], onDelete: Cascade)
+  consentTermId     Int
+  AcceptTCLEField   AcceptTCLEField[]
+}
+
+// Tabela de especialização ConfigSpeckResult
+model ConfigSpeckResult {
+  id               Int              @id @default(autoincrement())
+  speckApiToken    String           @unique
+  speckOrigin      String
+  speckUrl         String
+  ConfigurableItem ConfigurableItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId           Int
+  SpeckResult      SpeckResult[]
+}
+
+// End configs

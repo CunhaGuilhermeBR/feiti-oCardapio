@@ -1,0 +1,17 @@
+{
+    "connector": {
+        "name": "jsdom",
+        "options": {
+            "runScripts": "dangerously"
+        }
+    },
+    "formatters": ["codeframe"],
+    "hints": {
+        "content-type": ["error", {
+            ".*\\.js": "application/javascript; charset=utf-8"
+        }],
+        "http-cache": ["error", {
+            "revvingPatterns": ["\\/\\d+\\/\\w+\\.\\w{1,3}"]
+        }]
+    }
+}

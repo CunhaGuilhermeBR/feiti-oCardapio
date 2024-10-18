@@ -1,0 +1,47 @@
+body
+  mixin table(headElements, tableElements, entity)
+    table
+      tr
+        each tableHead in headElements 
+          th= tableHead
+      each element in tableElements
+        tr
+          each data in element
+            if data === true
+              td(style="text-align: center")
+                img(src=activeIcon, alt="Active icon")
+            else if data === false
+              td(style="text-align: center")
+                img(src=desactiveIcon, alt="Desactive icon")
+            else if data.type === 'actions'
+              td(style="text-align: center")
+                a.edit-link(
+                  href="#",
+                  data-id=`${data.id}`,
+                  data-fields=`${JSON.stringify(data.fields)}`,
+                  data-entity=`${entity}`,
+                  title="Editar"
+                )
+                  img(src=editIcon, alt="Edit icon")
+                a.delete-link(
+                  href=`delete/${entity}/${data.id}`,
+                  data-id=`${data.id}`,
+                  data-entity=`${entity}`,
+                  title="Excluir"
+                )
+                  img(src=deleteIcon, alt="Exclude icon")
+            else
+              td= data
+
+  #editModal.modal(style="display: none")
+    .admin-div
+      span.close-button &times;
+      form#editForm(action="api/v1/", method="PATCH")
+        .modal-fields
+        button.primary-button(
+          type="button",
+          style="padding: 0px; width: 8.75rem; height: 1.75rem"
+        ) Salvar
+
+  script
+    include index.js

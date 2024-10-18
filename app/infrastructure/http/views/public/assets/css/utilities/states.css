@@ -1,0 +1,34 @@
+/* Common button styles for accessibility */
+.btn-disabled {
+  cursor: not-allowed;
+}
+
+/* Common button styles for padding and other properties */
+.accept-button-inicial-state, .btn-disabled {
+  padding: 10px 20px;
+  border: none;
+  width: 100%;
+  color: white;
+  border-radius: 0 0 5px 5px;
+  cursor: pointer;
+}
+.btn-disabled {
+  background-color: var(--clr-primary-600);
+}
+.btnInterview.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.btn3.enabled {
+  color: var(--clr-f-button);
+  background: var(--clr-button);
+  cursor: pointer;
+}
+.accept-input:checked {
+  background-color: var(--clr-primary-500);
+  background-image: var(--checkMarkLogo);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+  border-color: var(--clr-primary-700);
+}

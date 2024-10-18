@@ -1,0 +1,41 @@
+:root {
+	--checkMarkLogo: url("../../icons/checkmark.svg");
+}
+
+.star-icon {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 32px !important;
+	height: 32px !important;
+	border-radius: 24px !important;
+}
+
+.important {
+    margin-top: 0.8rem;
+    display: flex;
+    align-items: center;
+}
+
+.important span {
+    font-family: var(--ff-secondary);
+    font-style: var(--clr-text);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-400);
+    line-height: var(--lh-300);
+    color: var(--white);
+    margin-left: 0.9rem;
+}
+
+.important span span {
+    text-decoration: underline;
+}
+
+.customer-logo {
+    display: flex;
+    align-items: center;
+}
+
+.customer-logo img {
+    height: 30px;
+}

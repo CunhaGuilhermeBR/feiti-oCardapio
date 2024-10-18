@@ -1,0 +1,9 @@
+include ../../../components/header/header.pug
+
+main.dashboard-main
+  body
+    include ../../../components/cards/dashboardCard/index.pug
+    if dashboardCards && dashboardCards.length > 0
+      .dashboard-grid
+        each card in dashboardCards
+          +dashboardCard(card.title, card.description, card.icon, card.href)

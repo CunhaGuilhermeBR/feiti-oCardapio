@@ -1,0 +1,59 @@
+/* 1. Settings */
+@import url(./public/assets/css/settings/global.css);
+
+/* 2. Design Tokens */
+@import url(./public/assets/css/design-tokens/colors.css);
+@import url(./public/assets/css/design-tokens/fonts.css);
+@import url(./public/assets/css/design-tokens/icons.css);
+@import url(./public/assets/css/design-tokens/typography.css);
+
+/* 3. Tools */
+
+/* 4. Generic */
+@import url(./public/assets/css/generic/normalize.css);
+
+/* 5. Elements */
+@import url(./public/assets/css/elements/a.css);
+@import url(./public/assets/css/elements/body.css);
+@import url(./public/assets/css/elements/buttons.css);
+@import url(./public/assets/css/elements/checkbox-accept.css);
+@import url(./public/assets/css/elements/footer.css);
+@import url(./public/assets/css/elements/h2.css);
+@import url(./public/assets/css/elements/header.css);
+@import url(./public/assets/css/elements/hr.css);
+@import url(./public/assets/css/elements/input-question.css);
+@import url(./public/assets/css/elements/input-rounded.css);
+@import url(./public/assets/css/elements/label.css);
+@import url(./public/assets/css/elements/links.css);
+@import url(./public/assets/css/elements/main.css);
+@import url(./public/assets/css/elements/paragraph.css);
+@import url(./public/assets/css/elements/selector.css);
+@import url(./public/assets/css/elements/span.css);
+@import url(./public/assets/css/elements/title.css);
+
+/* 6. Objects */
+
+/* 7. Components */
+@import url(./public/assets/css/components/admin-card.css);
+@import url(./public/assets/css/components/admin-dashboard-card.css);
+@import url(./public/assets/css/components/admin-div.css);
+@import url(./public/assets/css/components/admin-modal.css);
+@import url(./public/assets/css/components/admin-table.css);
+@import url(./public/assets/css/components/card-questionnaire.css);
+@import url(./public/assets/css/components/consent-terms.css);
+@import url(./public/assets/css/components/container-buttons.css);
+@import url(./public/assets/css/components/container-question.css);
+@import url(./public/assets/css/components/dashboard.css);
+@import url(./public/assets/css/components/genericPage.css);
+@import url(./public/assets/css/components/image-background.css);
+@import url(./public/assets/css/components/loading-indicator.css);
+@import url(./public/assets/css/components/login.css);
+@import url(./public/assets/css/components/primary-button.css);
+@import url(./public/assets/css/components/progress-section.css);
+@import url(./public/assets/css/components/secondary-button.css);
+@import url(./public/assets/css/components/selectQuestionnaire.css);
+@import url(./public/assets/css/components/swal.css);
+@import url(./public/assets/css/components/textarea-container.css);
+
+/* 8. Utilities */
+@import url(./public/assets/css/utilities/states.css);

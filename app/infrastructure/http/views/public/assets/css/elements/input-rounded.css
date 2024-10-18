@@ -1,0 +1,24 @@
+/* Common styles for rounded-input */
+.rounded-input {
+    border: 2px solid var(--cinnabar);
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    margin: 1rem 0;
+    min-width: 350px;
+}
+
+.rounded-input:focus {
+    border-color: darken(var(--cinnabar), 10%);
+    box-shadow: 0 0 5px rgba(229, 73, 58, 0.5);
+}
+
+.rounded-input::placeholder {
+    color: #ccc;
+}
+
+.rounded-input:hover {
+    border-color: lighten(var(--cinnabar), 10%);
+}

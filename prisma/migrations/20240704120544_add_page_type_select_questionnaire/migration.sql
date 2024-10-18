@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "ConfigPageType" ADD VALUE 'SELECTQUESTIONNAIRE';

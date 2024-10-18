@@ -1,0 +1,43 @@
+/* Common styles for centering elements */
+#consent-terms {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Common typography styles */
+#consent-terms {
+  font-family: var(--ff-primary);
+  font-size: var(--fs-800);
+  font-weight: var(--fw-semi-bold);
+}
+#consent-terms {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.55);
+  color: white;
+  z-index: 1000;
+}
+.consent-content {
+  overflow: hidden;
+  background: white;
+  color: black;
+  border-radius: 10px;
+  text-align: left;
+  max-width: 600px;
+  max-height: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.consent-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-left: 10px;
+  max-height: 20px;
+}

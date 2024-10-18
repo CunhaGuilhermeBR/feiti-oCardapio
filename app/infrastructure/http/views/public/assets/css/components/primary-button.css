@@ -1,0 +1,23 @@
+
+.primary-button  {
+  background-color: var(--charizard);
+  color: white;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: var(--fw-bold);
+  font-family: var( --ff-primary);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 48px;
+  font-size: 12pt;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.primary-button :hover {
+  background-color: var(--charmander);
+}
+

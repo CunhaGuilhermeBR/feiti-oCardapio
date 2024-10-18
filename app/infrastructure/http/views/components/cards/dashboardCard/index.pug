@@ -1,0 +1,8 @@
+body
+  mixin dashboardCard(title, description, icon, href)
+    a.dashboardcard-div(href=href)
+      .icon
+        img(src=icon, alt=title)
+      .content
+        h3= title
+        p= description
