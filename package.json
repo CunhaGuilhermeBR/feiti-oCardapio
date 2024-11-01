@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "build/infrastructure/http/index.js",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "packageManager": "yarn@1.22.22",
   "authors": [
     {
