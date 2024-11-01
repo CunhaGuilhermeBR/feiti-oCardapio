@@ -1,9 +1,5 @@
 import { CronJob } from 'cron'
 import { logger } from '../logger'
-import { executeVtexJob } from './vtex'
-import { executeFeedbackJob } from './notifyPendingFeedbacks'
-import { executeCreateFeedbackJob } from './createFeedback'
-import { executeCourseEndJob } from './checkCourseEnd'
 
 class Jobs {
 	private static instance: Jobs
@@ -45,10 +41,6 @@ class Jobs {
 
 	public setupJobs(): void {
 		logger.info('Setting up jobs')
-		this.addJob(process.env.VTEX_JOB_TIME, executeVtexJob)
-		this.addJob(process.env.FEEDBACK_JOB_TIME, executeFeedbackJob)
-		this.addJob(process.env.CREATE_FEEDBACK_JOB_TIME, executeCreateFeedbackJob)
-		this.addJob(process.env.CHECK_DEADLINE_JOB_TIME, executeCourseEndJob)
 		this.startJobs()
 	}
 }
