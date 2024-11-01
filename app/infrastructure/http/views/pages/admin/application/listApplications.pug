@@ -1,9 +1,0 @@
-include ../../../components/header/header.pug
-
-main.dashboard-main
-  body
-    .admin-div(style="align-items: center")
-      h2 Aplicações
-      a.secondary-button(href="/admin/application/new") Adicionar Aplicação
-      include ../../../components/table/table.pug
-      +table(['URL', 'Nome', 'Imagem', 'Ativo', 'Ações'], data, 'application')

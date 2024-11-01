@@ -1,9 +1,0 @@
-header {
-    background-color: var(--clr-primary);
-    height: 7vh;
-    padding-left: 4rem;
-    padding-right: 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}

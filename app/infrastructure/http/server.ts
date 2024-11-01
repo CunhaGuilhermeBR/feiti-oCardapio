@@ -155,7 +155,6 @@ class Server implements ServerDTO {
 		this.app.use(compression())
 		this.app.use(morgan(ecsFormat({ format: 'dev' })))
 		this.app.set('views', path.join(__dirname, 'views/pages'))
-		this.app.set('view engine', 'pug')
 		this.app.use(
 			'/public',
 			express.static(path.join(__dirname, 'views/public'), { maxAge: 60000 })

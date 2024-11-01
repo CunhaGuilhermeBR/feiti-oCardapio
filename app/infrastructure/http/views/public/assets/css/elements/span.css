@@ -1,8 +1,0 @@
-.container-question span {
-    font-family: var(--ff-secondary);
-    font-style: var(--clr-text);
-    font-weight: var(--fw-medium);
-    font-size: var(--fs-400);
-    line-height: var(--lh-text);
-    color: var(--white);
-}
