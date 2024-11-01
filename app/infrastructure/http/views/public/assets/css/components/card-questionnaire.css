@@ -1,0 +1,27 @@
+/* Common styles for text elements */
+.questionnaire-image, .questionnaire-title, .questionnaire-description {
+    justify-content: center;
+}
+
+/* Specific styles for each component */
+.questionnaire-image {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 5px;
+}
+.questionnaire-title {
+    margin-top: 10px;
+    font-family: var(--nunitoFont);
+    color: var(--squidInk);
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 900;
+}
+.questionnaire-description {
+    margin: 0 30px;
+    font-family: var( --robotoFont);
+    color: var(--clr-primary);
+    font-size: 12px;
+    line-height: 20px;
+}

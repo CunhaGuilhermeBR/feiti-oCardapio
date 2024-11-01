@@ -22,6 +22,9 @@ RUN yarn
 # Bundle app source code
 COPY --chown=node . .
 
+# # Generate schema prisma
+RUN npx prisma generate
+
 # Build app
 RUN yarn build
 

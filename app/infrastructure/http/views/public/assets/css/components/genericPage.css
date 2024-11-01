@@ -1,0 +1,25 @@
+/* Common styles for container elements */
+.container, .container-results {
+    width: 55%;
+    margin-left: 8rem;
+}
+
+/* Common styles for flexible containers */
+.container__div {
+    display: flex;
+    align-items: center;
+}
+.container {
+    height: 55%;
+}
+.container-results {
+    height: 40%;
+}
+.container__div a img {
+    width: 30px;
+    height: 26px;
+    justify-content: center;
+}
+.container__div img {
+    margin-top: 8px;
+}

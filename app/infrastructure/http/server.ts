@@ -2,10 +2,8 @@ import express from 'express'
 import { ecsFormat } from '@elastic/ecs-morgan-format'
 import { prisma } from '@/infrastructure/datasources/databases/prisma'
 import { logger } from '@/infrastructure/logger'
-import { errorHandler } from '@/infrastructure/http/middlewares'
 import V1Router from '@/infrastructure/http/routes/v1'
 import Controllers from '@/infrastructure/http/views/controllers/factories'
-import Jobs from '@/infrastructure/jobs'
 import morgan from 'morgan'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJSDoc from 'swagger-jsdoc'
@@ -13,13 +11,6 @@ import { ServerConfig, ServerDTO } from './types'
 import path from 'path'
 import favicon from 'serve-favicon'
 import compression from 'compression'
-import session from 'express-session'
-import redis from '@/infrastructure/datasources/databases/redis'
-import { RedisStore as RedisStoreRateLimit } from 'rate-limit-redis'
-import rateLimit from 'express-rate-limit'
-import RedisStore from 'connect-redis'
-import RabbitMQWrapper from '@/infrastructure/datasources/rabbitMQ'
-
 
 class Server implements ServerDTO {
 	public app: express.Express
@@ -34,29 +25,22 @@ class Server implements ServerDTO {
 
 	private async init(): Promise<void> {
 		await prisma.$connect()
-		this.setupJobs()
 		this.setupRateLimit()
 		this.setupMiddlewares()
 		this.setupRoutes()
 		this.setupSwagger()
 		Controllers(this.app)
-		// https://stackoverflow.com/questions/29700005/express-4-middleware-error-handler-not-being-called
-		this.setupErrorHandlers()
-		await RabbitMQWrapper.getInstance()
 	}
 
-	private setupJobs(): void {
-		Jobs.setupJobs()
-	}
 
 	private setupSwagger(): void {
 		const options = {
 			definition: {
 				openapi: '3.0.0',
 				info: {
-					title: 'AWSA Reforged',
+					title: 'Cardápio Feitiço de Santa',
 					version: '1.0.0',
-					description: 'AWSA Reforged API',
+					description: 'Cardápio Feitiço de Santa API',
 				},
 				// components: {
 				//   securitySchemes: {
@@ -84,9 +68,6 @@ class Server implements ServerDTO {
 		this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 	}
 
-	private setupErrorHandlers(): void {
-		this.app.use(errorHandler)
-	}
 
 	private setupRateLimit(): void {
 		// const limiter = rateLimit({
@@ -110,7 +91,7 @@ class Server implements ServerDTO {
 
 	private setupCors(): void {
 		this.app.use((req, res, next) => {
-			res.header('Access-Control-Allow-Origin', 'https://speckead.com.br')
+			res.header('Access-Control-Allow-Origin', '*')
 			res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
 			res.header([
 				'Origin',
@@ -155,6 +136,7 @@ class Server implements ServerDTO {
 		this.app.use(compression())
 		this.app.use(morgan(ecsFormat({ format: 'dev' })))
 		this.app.set('views', path.join(__dirname, 'views/pages'))
+		this.app.set('view engine', 'pug')
 		this.app.use(
 			'/public',
 			express.static(path.join(__dirname, 'views/public'), { maxAge: 60000 })
@@ -166,22 +148,6 @@ class Server implements ServerDTO {
 		this.app.enable('view cache')
 		this.app.use(express.json())
 		this.app.use(express.urlencoded({ extended: true }))
-		this.app.use(session({
-			store: new RedisStore({
-				client: redis,
-				prefix: 'session:',
-			}),
-			// proxy: true,
-			secret: process.env.SESSION_SECRET,
-			resave: false,
-			saveUninitialized: true,
-			cookie: {
-				// SÓ SETAR COMO TRUE SE FOR USAR HTTPS
-				secure: process.env.NODE_ENV === 'production' ? true : false,
-				// maxAge: 1000 * 60 * 60 * 24 // 24 hours
-				maxAge: 1000 * 60 * 60 // 1 hour
-			}
-		}))
 		this.setupCors()
 		process.on('uncaughtException', (error: Error) => {
 			logger.error('Uncaught Exception:', error)

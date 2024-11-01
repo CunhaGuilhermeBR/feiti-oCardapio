@@ -1,0 +1,50 @@
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--tealBlue);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 15px;
+    width: 90%
+}
+
+table th, table td {
+    color: var(--squidInk);
+    font-family: var(--ff-primary);
+    padding: 10px;
+    border: 1px solid var(--tealBlue);
+    border-radius: 0;
+    height: 1.75rem;
+}
+
+table td {
+    color: var(--tealBlue);
+    background-color: var(--whiteSmoke);
+}
+
+table td a {
+    padding: 5px;
+    gap: 5px;
+}
+
+table th {
+    background-color: var(--aliceBlue);
+    font-weight: var(--fw-medium);
+    color: black;
+}
+
+table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+table th:last-child {
+    border-top-right-radius: 8px;
+}
+
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
